@@ -9,6 +9,7 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
@@ -21,10 +22,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.lang.Nullable;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import lombok.extern.java.Log;
@@ -43,14 +43,14 @@ public class MainController {
 	@Value("${org.pwkf.httplog.outgoing.buffersize:4096}")
 	int outgoingBufferSize;
 
-	@RequestMapping("/{path}")
-	void handle(@PathVariable String path, @Nullable @RequestBody byte[] data, //
+	@RequestMapping(value = "/{path}", consumes = { MediaType.APPLICATION_OCTET_STREAM_VALUE })
+	void handle(@PathVariable String path, //
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
 		log.info("handle");
 
 		path = sanitizePath(path);
 
-		UUID requestUUID = dumpRequest(request, data, path);
+		UUID requestUUID = dumpRequest(request, path);
 		response.setHeader("X-Request-UUID", requestUUID.toString());
 
 		// Now select what we should send
@@ -94,15 +94,13 @@ public class MainController {
 
 			File file = new File(fileName);
 			if (file.isFile()) {
+				Path filepath = Paths.get(fileName);
+				long filesize = Files.size(filepath);
+				response.setHeader("Content-Length", String.valueOf(filesize));
+
 				try (FileInputStream inputStream = new FileInputStream(file)) {
 					try (OutputStream outStream = response.getOutputStream()) {
-						byte[] buffer = new byte[outgoingBufferSize];
-						int bytesRead = -1;
-
-						// write bytes read from the input stream into the output stream
-						while ((bytesRead = inputStream.read(buffer)) != -1) {
-							outStream.write(buffer, 0, bytesRead);
-						}
+						copyStream(inputStream, outStream, outgoingBufferSize);
 					}
 				}
 			} else {
@@ -110,11 +108,12 @@ public class MainController {
 			}
 		}
 
+		response.flushBuffer();
+
 		return;
 	}
 
-	private UUID dumpRequest(HttpServletRequest request, byte[] data, String path)
-			throws IOException, FileNotFoundException {
+	private UUID dumpRequest(HttpServletRequest request, String path) throws IOException, FileNotFoundException {
 		// Create a new directory
 		Path dir = Paths.get(incomingDir + "/" + path);
 		try {
@@ -148,10 +147,10 @@ public class MainController {
 		}
 
 		// Dump the Body
-		if (data != null) {
-			log.info("RECV - opening body " + fileName);
-			try (FileOutputStream out = new FileOutputStream(fileName)) {
-				out.write(data);
+		log.info("RECV - opening body " + fileName);
+		try (InputStream inputStream = request.getInputStream()) {
+			try (FileOutputStream outStream = new FileOutputStream(fileName)) {
+				copyStream(inputStream, outStream, outgoingBufferSize);
 			}
 		}
 
@@ -176,5 +175,21 @@ public class MainController {
 		String path = String.join("/", pathParts);
 
 		return path;
+	}
+
+	static long copyStream(InputStream is, OutputStream os, int bufferSize) throws IOException {
+		byte[] buffer = new byte[bufferSize];
+		int bytesRead = -1;
+		long bytesReadTotal = 0;
+
+		// write bytes read from the input stream into the output stream
+		while ((bytesRead = is.read(buffer)) != -1) {
+			log.fine("copyStream - bytesReadTotal:" + bytesReadTotal + " bytesRead:" + bytesRead);
+			os.write(buffer, 0, bytesRead);
+			bytesReadTotal += bytesRead;
+		}
+
+		log.info("copyStream - bytesReadTotal:" + bytesReadTotal);
+		return bytesReadTotal;
 	}
 }
