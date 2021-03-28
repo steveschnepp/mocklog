@@ -38,14 +38,6 @@ import lombok.extern.java.Log;
 @Log
 @Component
 public class MockDispatcherServlet extends DispatcherServlet {
-	@Value("${org.pwkf.httplog.incoming.dir}")
-	String incomingDir;
-
-	@Value("${org.pwkf.httplog.outgoing.dir}")
-	String outgoingDir;
-
-	@Value("${org.pwkf.httplog.outgoing.buffersize:4096}")
-	int outgoingBufferSize;
 
 	static {
 		log.info("start");

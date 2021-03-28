@@ -34,13 +34,13 @@ import lombok.extern.java.Log;
 @RequestMapping
 public class MainController {
 
-	@Value("${org.pwkf.httplog.incoming.dir}")
+	@Value("${httplog.incoming.dir}")
 	String incomingDir;
 
-	@Value("${org.pwkf.httplog.outgoing.dir}")
+	@Value("${httplog.outgoing.dir}")
 	String outgoingDir;
 
-	@Value("${org.pwkf.httplog.outgoing.buffersize:4096}")
+	@Value("${httplog.outgoing.buffersize:4096}")
 	int outgoingBufferSize;
 
 	@RequestMapping(value = "/{path}", consumes = { MediaType.APPLICATION_OCTET_STREAM_VALUE })
