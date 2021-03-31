@@ -9,6 +9,15 @@ It helps for :
 * Debugging HTTP calls 
 * Mock server, to be able to send predetermined content. 
 
+## Naming
+
+The name was coined by [Markus Perndorfer](https://github.com/mpern) : 
+
+> “mocklog” sounds kinda cute
+> 
+> Look at little "mocklog", playing with his files and serving http requests like the big boys!
+
+
 ## Usage
 
 The easiest way is to use **Docker**:
