@@ -10,9 +10,9 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>org.pwkf</groupId>
-	<artifactId>httplog</artifactId>
+	<artifactId>mocklog</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>httplog</name>
+	<name>mocklog</name>
 	<description>Http logger</description>
 	<properties>
 		<java.version>11</java.version>

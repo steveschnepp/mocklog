@@ -1,5 +1,6 @@
-package org.pwkf.httplog.controller;
+package org.pwkf.mocklog.controller;
 
+import org.pwkf.mocklog.controller.MainController
 import org.springframework.boot.test.context.SpringBootTest;
 
 import spock.lang.Specification

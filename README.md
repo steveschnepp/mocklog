@@ -1,9 +1,9 @@
-# httplog
+# mocklog
 HTTP Logger &amp; Mock Server
 
 ## Description
 
-**httplog** is a HTTP server that is for developement purposes. 
+**mocklog** is a HTTP server that is for developement purposes.
 
 It helps for :
 * Debugging HTTP calls 
@@ -13,8 +13,8 @@ It helps for :
 
 The easiest way is to use **Docker**:
 
-    docker build -t httplog .
-    docker run --rm -v $PWD:/srv -p8080:8080 httplog
+    docker build -t mocklog .
+    docker run --rm -v $PWD:/srv -p8080:8080 mocklog
 
 This will server the current `incoming/` and `outgoing/` directory on the port `8080` of `localhost`.
 
@@ -30,5 +30,5 @@ It represents the UUID of the request, in order to be able to find its dump in t
 
 ## Status
 
-[![Java CI with Maven](https://github.com/steveschnepp/httplog/actions/workflows/maven.yml/badge.svg)](https://github.com/steveschnepp/httplog/actions/workflows/maven.yml)
-[![CodeQL](https://github.com/steveschnepp/httplog/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/steveschnepp/httplog/actions/workflows/codeql-analysis.yml)
+[![Java CI with Maven](https://github.com/steveschnepp/mocklog/actions/workflows/maven.yml/badge.svg)](https://github.com/steveschnepp/mocklog/actions/workflows/maven.yml)
+[![CodeQL](https://github.com/steveschnepp/mocklog/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/steveschnepp/mocklog/actions/workflows/codeql-analysis.yml)

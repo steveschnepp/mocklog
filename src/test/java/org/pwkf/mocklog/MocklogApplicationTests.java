@@ -1,10 +1,10 @@
-package org.pwkf.httplog;
+package org.pwkf.mocklog;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class HttplogApplicationTests {
+class MocklogApplicationTests {
 
 	@Test
 	void contextLoads() {

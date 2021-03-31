@@ -1,4 +1,4 @@
-package org.pwkf.httplog.controller;
+package org.pwkf.mocklog.controller;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -34,13 +34,13 @@ import lombok.extern.java.Log;
 @RequestMapping
 public class MainController {
 
-	@Value("${httplog.incoming.dir}")
+	@Value("${mocklog.incoming.dir}")
 	String incomingDir;
 
-	@Value("${httplog.outgoing.dir}")
+	@Value("${mocklog.outgoing.dir}")
 	String outgoingDir;
 
-	@Value("${httplog.outgoing.buffersize:4096}")
+	@Value("${mocklog.outgoing.buffersize:4096}")
 	int outgoingBufferSize;
 
 	@RequestMapping(value = "/{path}", consumes = { MediaType.APPLICATION_OCTET_STREAM_VALUE })
