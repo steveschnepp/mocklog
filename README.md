@@ -3,7 +3,7 @@ HTTP Logger &amp; Mock Server
 
 ## Description
 
-**mocklog** is a HTTP server that is for developement purposes.
+**mocklog** is a HTTP server that is for development purposes.
 
 It helps for :
 * Debugging HTTP calls 
